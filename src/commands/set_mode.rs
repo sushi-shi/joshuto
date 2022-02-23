@@ -57,6 +57,7 @@ pub fn set_mode(context: &mut AppContext, backend: &mut TuiBackend) -> JoshutoRe
                 .prefix(PREFIX)
                 .suffix(&mode_string.as_str()[1..])
                 .get_input(backend, context)
+                .finished()
         }
         None => None,
     };

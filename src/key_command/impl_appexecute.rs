@@ -70,7 +70,9 @@ impl AppExecute for Command {
             Self::RenameFilePrepend => rename_file::rename_file_prepend(context, backend, keymap_t),
             Self::TouchFile(arg) => touch_file::touch_file(context, arg.as_str()),
             Self::SearchGlob(pattern) => search_glob::search_glob(context, pattern.as_str()),
-            Self::SearchString(pattern) => search_string::search_string(context, pattern.as_str()),
+            Self::SearchString(pattern) => {
+                search_string::search_string(context, pattern.as_str(), false)
+            }
             Self::SearchFzf => search_fzf::search_fzf(context, backend),
             Self::SearchNext => search::search_next(context),
             Self::SearchPrev => search::search_prev(context),

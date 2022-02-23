@@ -105,6 +105,7 @@ where
             .prefix(PROMPT)
             .menu_items(menu_options.iter().map(|s| s.as_str()))
             .get_input(backend, context)
+            .finished()
     };
     match user_input.as_ref() {
         Some(user_input) if user_input.starts_with(PROMPT) => {

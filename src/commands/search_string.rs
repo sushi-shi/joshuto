@@ -20,6 +20,7 @@ pub fn search_string_fwd(curr_tab: &JoshutoTab, pattern: &str) -> Option<usize> 
     }
     None
 }
+
 pub fn search_string_rev(curr_tab: &JoshutoTab, pattern: &str) -> Option<usize> {
     let curr_list = curr_tab.curr_list_ref()?;
 
@@ -36,9 +37,34 @@ pub fn search_string_rev(curr_tab: &JoshutoTab, pattern: &str) -> Option<usize> 
     None
 }
 
-pub fn search_string(context: &mut AppContext, pattern: &str) -> JoshutoResult<()> {
+// or `search_string_fwd` should take Option<usize>
+pub fn search_string_from_start(curr_tab: &JoshutoTab, pattern: &str) -> Option<usize> {
+    let curr_list = curr_tab.curr_list_ref()?;
+
+    let offset = 0;
+    let contents_len = curr_list.contents.len();
+    for i in 0..contents_len {
+        let file_name_lower = curr_list.contents[(offset + i) % contents_len]
+            .file_name()
+            .to_lowercase();
+        if file_name_lower.contains(pattern) {
+            return Some((offset + i) % contents_len);
+        }
+    }
+    None
+}
+
+pub fn search_string(
+    context: &mut AppContext,
+    pattern: &str,
+    incremental: bool,
+) -> JoshutoResult<()> {
     let pattern = pattern.to_lowercase();
-    let index = search_string_fwd(context.tab_context_ref().curr_tab_ref(), pattern.as_str());
+    let index = if incremental {
+        search_string_from_start(context.tab_context_ref().curr_tab_ref(), &pattern)
+    } else {
+        search_string_fwd(context.tab_context_ref().curr_tab_ref(), pattern.as_str())
+    };
     if let Some(index) = index {
         let _ = cursor_move::cursor_move(context, index);
     }
