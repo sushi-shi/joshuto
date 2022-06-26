@@ -14,6 +14,8 @@ use crate::fs::JoshutoDirList;
 use crate::io::IoWorkerProgress;
 use crate::preview::preview_file::FilePreview;
 
+use nix::unistd::Pid;
+
 #[derive(Debug)]
 pub enum AppEvent {
     // User input events
@@ -25,7 +27,7 @@ pub enum AppEvent {
     IoWorkerResult(io::Result<IoWorkerProgress>),
 
     // forked process events
-    ChildProcessComplete(u32),
+    ChildProcessComplete(Pid),
 
     // preview thread events
     PreviewDir(io::Result<JoshutoDirList>),

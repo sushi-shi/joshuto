@@ -8,8 +8,8 @@ license = "LGPL-3.0"
 edition = "2021"
 
 [dependencies]
-ansi-to-tui = { version = "^0", optional = true }
 alphanumeric-sort = "^1"
+ansi-to-tui = { version = "^0", optional = true }
 chrono = "^0"
 colors-transform = "^0"
 dirs-next = "^2"
@@ -17,6 +17,7 @@ filetime = "^0"
 globset = "^0"
 lazy_static = "^1"
 libc = "^0"
+nix = "0.24.1"
 notify = "5.0.0-pre.15"
 open = "^2"
 phf = { version = "^0", features = ["macros"], optional = true }
@@ -35,9 +36,9 @@ tui = { version = "^0", default-features = false, features = ["termion"] }
 unicode-segmentation = "^1"
 unicode-width = "^0"
 users = "^0"
+walkdir = "^2"
 whoami = "^1"
 xdg = "^2"
-walkdir = "^2"
 
 [features]
 devicons = [ "phf" ]

@@ -6,9 +6,11 @@ use std::thread;
 use crate::event::AppEvent;
 use crate::io::{IoWorkerObserver, IoWorkerProgress, IoWorkerThread};
 
+use nix::unistd::Pid;
+
 pub struct WorkerContext {
     // forks of applications
-    child_pool: HashMap<u32, thread::JoinHandle<()>>,
+    child_pool: HashMap<Pid, thread::JoinHandle<()>>,
     // to send info
     event_tx: mpsc::Sender<AppEvent>,
     // queue of IO workers
@@ -100,11 +102,11 @@ impl WorkerContext {
         self.worker.take()
     }
 
-    pub fn push_child(&mut self, child_id: u32, handle: thread::JoinHandle<()>) {
+    pub fn push_child(&mut self, child_id: Pid, handle: thread::JoinHandle<()>) {
         self.child_pool.insert(child_id, handle);
     }
 
-    pub fn join_child(&mut self, child_id: u32) {
+    pub fn join_child(&mut self, child_id: Pid) {
         if let Some(handle) = self.child_pool.remove(&child_id) {
             let _ = handle.join();
         }
